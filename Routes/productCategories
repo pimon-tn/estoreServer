@@ -10,17 +10,31 @@ const pool = new Pool({
     port: 5432,
 });
 
-productCategories.get('/', async (req, res) => {
+productCategories.get('/categories', async (req, res) => {
     let categoryData;
-    pool.query("SELECT * FROM estore.categories", (error, categories)=>{
+    pool.query("SELECT * FROM estore.categories", (error, data)=>{
         if(error){
             categoryData = error;
             res.status(500).send(categoryData);
         }else{
-            categoryData = categories.rows;
+            categoryData = data.rows;
             res.status(200).send(categoryData);
         }
     })
 });
+
+productCategories.get('/products', async (req, res) => {
+    let productData;
+    pool.query("SELECT * FROM estore.products", (error, data)=>{
+        if(error){
+            productData = error;
+            res.status(500).send(productData);
+        }else{
+            productData = data.rows;
+            res.status(200).send(productData);
+        }
+    })
+});
+
 
 module.exports = productCategories;
